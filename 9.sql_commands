@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS kafka_userlog
+(
+  id             UInt64,
+  Day          Int64,
+  TickTime      Double,
+  Speed          Double
+)
+ENGINE=Kafka('localhost:9092', 'v6', 'kafka_group1', 'JSONEachRow');
+
+CREATE TABLE test.userlogs_kafka
+(
+  id             UInt64,
+  Day          Int64,
+  TickTime      Double,
+  Speed          Double
+)
+Engine=Memory
+
+CREATE MATERIALIZED VIEW test.userlogs_kafka_consumer
+TO test.userlogs_kafka
+AS SELECT *
+FROM kafka_userlog;
+
+
+
